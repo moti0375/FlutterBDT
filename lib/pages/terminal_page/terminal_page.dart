@@ -1,3 +1,4 @@
+import 'package:bluetooth_data_terminal/pages/terminal_page/terminal_page_bloc.dart';
 import 'package:bluetooth_data_terminal/ui/conrol_buttons.dart';
 import 'package:bluetooth_data_terminal/ui/display.dart';
 import 'package:bluetooth_data_terminal/ui/terminal_button.dart';
@@ -5,8 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TerminalPage extends StatelessWidget {
+
+  final TerminalPageBloc bloc;
+  TerminalPage({@required this.bloc});
+
   @override
   Widget build(BuildContext context) {
+    bloc.startDeviceScan();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,

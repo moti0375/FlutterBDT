@@ -1,4 +1,6 @@
+import 'package:bluetooth_data_terminal/bluetooth/ConnectionBase.dart';
 import 'package:bluetooth_data_terminal/pages/terminal_page/terminal_page.dart';
+import 'package:bluetooth_data_terminal/pages/terminal_page/terminal_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
          primarySwatch: Colors.blue,
       ),
-      home: TerminalPage(),
+      home: TerminalPage(bloc: TerminalPageBloc(BluetoothManager()),),
     );
   }
 }
