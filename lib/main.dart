@@ -3,6 +3,7 @@ import 'package:bluetooth_data_terminal/pages/terminal_page/terminal_page.dart';
 import 'package:bluetooth_data_terminal/pages/terminal_page/terminal_page_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,9 +18,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-         primarySwatch: Colors.blue,
+        primarySwatch: Colors.blue,
       ),
-      home: TerminalPage(bloc: TerminalPageBloc(BluetoothManager()),),
+      home: Provider<TerminalPageBloc>(
+        builder: (context) => TerminalPageBloc(BluetoothManager()),
+        child: TerminalPage(),
+        dispose: (context, bloc){
+          print("Dispose..");
+          bloc.dispose();
+          },
+      ),
     );
   }
 }

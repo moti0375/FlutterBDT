@@ -4,14 +4,13 @@ import 'package:bluetooth_data_terminal/ui/display.dart';
 import 'package:bluetooth_data_terminal/ui/terminal_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TerminalPage extends StatelessWidget {
 
-  final TerminalPageBloc bloc;
-  TerminalPage({@required this.bloc});
-
   @override
   Widget build(BuildContext context) {
+    TerminalPageBloc bloc = Provider.of<TerminalPageBloc>(context);
     bloc.startDeviceScan();
     return Scaffold(
       appBar: AppBar(

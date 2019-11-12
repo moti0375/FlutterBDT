@@ -1,22 +1,22 @@
 import 'dart:async';
 
-import 'package:bluetooth/bluetooth.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 abstract class ConnectionBase{
   Stream<ScanResult> scanForDevices();
   void cancelScan();
-  Stream<BluetoothDeviceState> connectDevice(BluetoothDevice device);
+  Future<void> connectDevice(BluetoothDevice device);
   Future<void> disconnectDevice();
   Stream<String> deviceDataStream();
+  Stream<BluetoothState> connectionStream();
 }
 
 class BluetoothManager implements ConnectionBase{
-
   FlutterBlue _flutterBlue = FlutterBlue.instance;
 
   @override
-  Stream<BluetoothDeviceState> connectDevice(BluetoothDevice device) {
-    return _flutterBlue.connect(device, timeout: Duration(milliseconds: 2000), autoConnect: false);
+  Future<void> connectDevice(BluetoothDevice device) async {
+    return await device.connect();
   }
 
   @override
@@ -37,6 +37,12 @@ class BluetoothManager implements ConnectionBase{
 
   @override
   void cancelScan() {
+    _flutterBlue.stopScan();
+  }
+
+  @override
+  Stream<BluetoothState> connectionStream() {
+    return _flutterBlue.state;
   }
 
 }
