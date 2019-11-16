@@ -14,7 +14,6 @@ class FlutterSerialService extends ConnectionBase {
   FlutterBluetoothSerial _bluetoothSerial = FlutterBluetoothSerial.instance;
   BehaviorSubject<TerminalDataModel> _connectionStream =
       BehaviorSubject.seeded(TerminalDataModel());
-  StreamSubscription<BluetoothDiscoveryResult> scanSubscription;
   Map<String, prefix0.BluetoothDevice> _devices = Map();
   List<int> buffer = List();
   BluetoothConnection _connection;
@@ -36,6 +35,7 @@ class FlutterSerialService extends ConnectionBase {
   @override
   void dispose() {
     print("Dispose: ");
+
     if(_connection != null && _connection.isConnected){
       _connection.close();
       _connection = null;
@@ -44,14 +44,10 @@ class FlutterSerialService extends ConnectionBase {
     _bluetoothSerial.cancelDiscovery();
     _connectionStream.close();
     _connectionStream = null;
-    scanSubscription.cancel();
-    scanSubscription = null;
-
   }
 
   @override
   Stream<TerminalDataModel> getConnectionStream() {
-    _initializeBtConnectionState();
     return _connectionStream;
   }
 
@@ -78,14 +74,9 @@ class FlutterSerialService extends ConnectionBase {
     _connectionStream.add(_connectionStream.value.updateWith(connectionState: AppBtConnectionState.Connected));
     _connection.input.listen((Uint8List data) {
       _processInputData(data);
-      //connection.output.add(data); // Sending data
-
-//      if (ascii.decode(data).contains('!')) {
-//        connection.finish(); // Closing connection
-//        print('Disconnecting by local host');
-//      }
     }).onDone(() {
-      print('Disconnected by remote request');
+      print("onDone");
+      dispose();
     });
   }
 
@@ -93,20 +84,9 @@ class FlutterSerialService extends ConnectionBase {
     _connectionStream.add(_connectionStream.value.updateWith(connectionState: connectionState));
   }
 
-  void _initializeBtConnectionState() {
-    print("_initializeBtConnectionState: ");
-    _bluetoothSerial.onStateChanged().listen((connectionState) {
-      print("onStateChanged: $connectionState");
-    });
-  }
-
   void _processInputData(Uint8List data) {
     String upperRow = "";
     String bottomRow = "";
-
-    bool lineStart = false;
-
-    int a;
 
     data.forEach((it){
       if(it != 252 && it != 253){
