@@ -1,4 +1,5 @@
 import 'package:bluetooth_data_terminal/bluetooth/ConnectionBase.dart';
+import 'package:bluetooth_data_terminal/bluetooth/flutter_serial_service.dart';
 import 'package:bluetooth_data_terminal/pages/terminal_page/terminal_page.dart';
 import 'package:bluetooth_data_terminal/pages/terminal_page/terminal_page_bloc.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +22,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Provider<TerminalPageBloc>(
-        builder: (context) => TerminalPageBloc(BluetoothManager()),
-        child: TerminalPage(),
-        dispose: (context, bloc){
+        builder: (context) => TerminalPageBloc(FlutterSerialService()),
+        child: Consumer<TerminalPageBloc>(
+          builder: (context, bloc, _) => TerminalPage(bloc: bloc),
+        ),
+        dispose: (context, bloc) {
           print("Dispose..");
           bloc.dispose();
-          },
+        },
       ),
     );
   }
