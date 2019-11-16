@@ -5,7 +5,7 @@ import 'package:bluetooth_data_terminal/model/bt_connection_state.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 class TerminalPageBloc{
-  final ConnectionBase _connectionBase;
+  final BluetoothConnectionBase _connectionBase;
   final  String deviceName = "Xicoy V10" ;
   Stream<TerminalDataModel> connectionStream;
   TerminalPageBloc(this._connectionBase){

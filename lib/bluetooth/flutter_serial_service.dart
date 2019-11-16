@@ -10,7 +10,7 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart'
     as prefix0;
 import 'package:rxdart/rxdart.dart';
 
-class FlutterSerialService extends ConnectionBase {
+class FlutterSerialService extends BluetoothConnectionBase {
   FlutterBluetoothSerial _bluetoothSerial = FlutterBluetoothSerial.instance;
   BehaviorSubject<TerminalDataModel> _connectionStream =
       BehaviorSubject.seeded(TerminalDataModel());
